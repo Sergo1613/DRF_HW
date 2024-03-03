@@ -22,7 +22,7 @@ class CourseSerializer(serializers.ModelSerializer):
     lessons_count = serializers.SerializerMethodField()
 
     # Создание списка уроков для курса
-    lessons_list = LessonSerializer(many=True, source='lessons')
+    lessons_list = LessonSerializer(many=True, read_only=True, source='lessons')
 
     # Валидация ссылки на материал
     url = serializers.URLField(validators=[validator_scam_url], read_only=True)

@@ -20,3 +20,5 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_history_payments(self, objects):
         return objects.history_payments
+
+

@@ -25,7 +25,7 @@ class Lesson(models.Model):
     description = models.TextField(verbose_name='описание урока', **NULLABLE)
     preview = models.ImageField(upload_to='preview/', verbose_name='превью урока', **NULLABLE)
     video_link = models.URLField(verbose_name='ссылка на видео', **NULLABLE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, related_name='lessons')
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='lessons', default=None, **NULLABLE)
 
     class Meta:
