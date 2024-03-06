@@ -4,18 +4,12 @@ from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 
 from users.models import User, Payments
-from users.serializers import UserSerializer, PaymentsSerializer
+from users.serializers import UserSerializer, PaymentsSerializer, UserRegistrationSerializer
 
 
 class UserCreateAPIView(generics.CreateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserRegistrationSerializer
     queryset = User.objects.all()
-
-    def perform_create(self, serializer):
-        validated_data = serializer.validated_data
-        password = validated_data.get('password')
-        hashed_password = make_password(password)
-        serializer.save(password=hashed_password)
 
 
 class UserListAPIView(generics.ListAPIView):
