@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from materials.models import Course, Lesson, CourseSubscription
-from materials.paginators import CoursePaginator, LessonPaginator
+from materials.paginators import Mypaginator
 from materials.permissions import IsOwner, IsModerator
 from materials.serializers import CourseSerializer, LessonSerializer, CourseSubscriptionSerializer
 
@@ -14,7 +14,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
-    pagination_class = CoursePaginator
+    pagination_class = Mypaginator
 
     def create(self, request, *args, **kwargs):
         # Checking if a user is a moderator
@@ -41,7 +41,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
-    pagination_class = LessonPaginator
+    pagination_class = Mypaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):

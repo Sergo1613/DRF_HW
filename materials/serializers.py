@@ -7,7 +7,7 @@ from materials.validators import validator_scam_url
 class LessonSerializer(serializers.ModelSerializer):
 
     # Валидация ссылки на материал
-    url = serializers.URLField(validators=[validator_scam_url])
+    url = serializers.URLField(validators=[validator_scam_url], read_only=True)
 
     class Meta:
         model = Lesson
