@@ -6,8 +6,14 @@ from materials.validators import validator_scam_url
 
 class LessonSerializer(serializers.ModelSerializer):
 
-    # Валидация ссылки на материал
-    url = serializers.URLField(validators=[validator_scam_url], read_only=True)
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+
+
+class LessonCreateSerializer(serializers.ModelSerializer):
+
+    video_link = serializers.URLField(validators=[validator_scam_url])
 
     class Meta:
         model = Lesson
@@ -23,9 +29,6 @@ class CourseSerializer(serializers.ModelSerializer):
 
     # Создание списка уроков для курса
     lessons_list = LessonSerializer(many=True, read_only=True, source='lessons')
-
-    # Валидация ссылки на материал
-    url = serializers.URLField(validators=[validator_scam_url], read_only=True)
 
     class Meta:
         model = Course

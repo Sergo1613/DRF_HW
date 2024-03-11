@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from materials.models import Course, Lesson, CourseSubscription
 from materials.paginators import Mypaginator
 from materials.permissions import IsOwner, IsModerator
-from materials.serializers import CourseSerializer, LessonSerializer, CourseSubscriptionSerializer
+from materials.serializers import CourseSerializer, LessonSerializer, CourseSubscriptionSerializer, \
+    LessonCreateSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -32,7 +33,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
-    serializer_class = LessonSerializer
+    serializer_class = LessonCreateSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
 
