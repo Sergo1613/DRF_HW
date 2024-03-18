@@ -42,6 +42,7 @@ class LessonTestCase(APITestCase):
         data = {
             'name': 'test2',
             'description': 'this is second lesson',
+            'video_link': 'https://youtube.com/123/',
             'course': self.course.id,
             'user': self.user.id
         }
@@ -50,6 +51,7 @@ class LessonTestCase(APITestCase):
             reverse('materials:lesson-create'),
             data=data
         )
+
         self.assertEqual(
             response.status_code,
             status.HTTP_201_CREATED
@@ -142,14 +144,12 @@ class CourseSubscriptionAPITestCase(APITestCase):
         )
 
     def test_get_course_subscriptions_authenticated(self):
-
         self.client.force_authenticate(user=self.user)
         # response = self.client.get(reverse('course-subscription'))
         response = self.client.get('/subscription/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_post_course_subscription_authenticated(self):
-
         self.client.force_authenticate(user=self.user)
         response = self.client.post('/subscription/{}/'.format(self.course.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -157,6 +157,5 @@ class CourseSubscriptionAPITestCase(APITestCase):
         self.assertIn('subscription', response.data)
 
     def test_post_course_subscription_unauthenticated(self):
-
         response = self.client.post('/subscription/{}/'.format(self.course.id))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
