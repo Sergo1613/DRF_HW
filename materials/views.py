@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, generics, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,7 +8,8 @@ from materials.models import Course, Lesson, CourseSubscription
 from materials.paginators import Mypaginator
 from materials.permissions import IsOwner, IsModerator
 from materials.serializers import CourseSerializer, LessonSerializer, CourseSubscriptionSerializer, \
-    LessonCreateSerializer
+    LessonCreateSerializer, CoursePaymentSerializer
+from materials.services import get_session
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -114,3 +115,15 @@ class CourseSubscriptionAPIView(APIView):
         else:
             # Возвращать сообщение об ошибке, если пользователь не аутентифицирован
             return Response({"message": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class CoursePaymentApiView(generics.CreateAPIView):
+    """Покупка продукта"""
+    serializer_class = CoursePaymentSerializer
+    permission_classes = [AllowAny]
+
+    def perform_create(self, serializer):
+        paid_of_course = serializer.save()
+        payment_link = get_session(paid_of_course)
+        paid_of_course.payment_link = payment_link
+        paid_of_course.save()

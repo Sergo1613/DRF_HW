@@ -11,6 +11,8 @@ class Course(models.Model):
     description = models.TextField(verbose_name='описание курса')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
     url = models.URLField(verbose_name='url', **NULLABLE)
+    price = models.PositiveIntegerField(verbose_name='цена', **NULLABLE)
+
 
     class Meta:
         verbose_name = 'курс'
@@ -39,3 +41,16 @@ class Lesson(models.Model):
 class CourseSubscription(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+
+
+class CoursePayment(models.Model):
+    price_amount = models.CharField(verbose_name='сумма оплаты')
+    payment_link = models.URLField(max_length=400, verbose_name='ссылка на оплату', **NULLABLE)
+    payment_id = models.CharField(max_length=255, verbose_name='id_of_payment', **NULLABLE)
+
+    class Meta:
+        verbose_name = 'оплата курса'
+        verbose_name_plural = 'оплаты курсов'
+
+    def __str__(self):
+        return self.payment_id
