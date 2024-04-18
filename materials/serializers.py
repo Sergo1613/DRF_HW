@@ -30,7 +30,7 @@ class CourseSerializer(serializers.ModelSerializer):
     # Создание списка уроков для курса
     lessons_list = LessonSerializer(many=True, read_only=True, source='lessons')
 
-    link_of_payment = serializers.URLField()
+    url = serializers.URLField(validators=[validator_scam_url], read_only=True)
 
     class Meta:
         model = Course

@@ -13,7 +13,6 @@ class Course(models.Model):
     url = models.URLField(verbose_name='url', **NULLABLE)
     price = models.PositiveIntegerField(verbose_name='цена', **NULLABLE)
 
-
     class Meta:
         verbose_name = 'курс'
         verbose_name_plural = 'курсы'
@@ -44,6 +43,7 @@ class CourseSubscription(models.Model):
 
 
 class CoursePayment(models.Model):
+    name = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='название курса', default=4, **NULLABLE)
     price_amount = models.CharField(verbose_name='сумма оплаты')
     payment_link = models.URLField(max_length=400, verbose_name='ссылка на оплату', **NULLABLE)
     payment_id = models.CharField(max_length=255, verbose_name='id_of_payment', **NULLABLE)
