@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, generics, status
+from materials.tasks import send_mail_about_updates
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -31,6 +32,18 @@ class CourseViewSet(viewsets.ModelViewSet):
         if is_moderator:
             return self.permission_denied(request)
         return super().destroy(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        subscribed_users = instance.get_subscribed_users()
+        user_email = 'mentoss2012@gmail.com'
+        # Отправляем уведомление каждому пользователю
+        for user in subscribed_users:
+            if user.email:
+                send_mail_about_updates.delay(user_email, instance.title)
+
+        return super().update(request, *args, **kwargs)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):

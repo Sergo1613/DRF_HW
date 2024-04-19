@@ -38,7 +38,7 @@ class Lesson(models.Model):
 
 
 class CourseSubscription(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subscriptions')
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
 
 
